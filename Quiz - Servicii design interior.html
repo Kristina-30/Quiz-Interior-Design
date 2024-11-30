@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Servicii de design interior</title>
+
+    <style>
+
+    body{
+    font-size: 20px;
+    font-family: sans-serif;
+    color: #333;
+    padding: 10px;
+    background-color:rgb(248, 232, 212);
+    }
+    
+    img {
+    max-width: 100%;
+    height: auto;
+    }
+    .question{
+    font-weight: 600;
+    }
+    .answers {
+        margin-bottom: 20px;
+    }
+    #submit{
+    font-family: sans-serif;
+    font-size: 15px;
+    background-color: rgb(229, 176, 119);
+    color: #fff;
+    border: 0px;
+    border-radius: 3px;
+    padding: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    }
+    #submit:hover{
+    background-color: rgb(170, 126, 51);
+    }
+    </style>
+
+</head>
+<body>
+    <img class="image" src="./Interior design.jpg">
+    <h2 style="text-align: center"> Quiz servicii de design interior </h2>
+    <h5 style="text-align: justify"> Selectați răspunsul corect la următoarele întrebări (există doar un singur răspuns corect). </h5>
+    <div id="quiz"></div>
+    <button id="submit"> Vezi rezultatul </button>
+    <div id="results"></div>
+
+
+
+
+
+    <script>
+
+
+        var myQuestions = [
+            {
+                question: "1. Care este <b> importanța economică </b> a serviciilor de design interior?",
+                answers: {
+
+                    a: 'Contribuie la bunăstarea mentală <br>', 
+                    b: 'Diminuează anxietatea, stresul și insomnia <br>',
+                    c: 'Determină creșterea valorii proprietăților oferite spre vânzare'
+                },
+                correctAnswer: 'c'
+            },
+            {
+                question: "2. <b> Sediul </b> firmelor selectate pentru analiza comparativă este:",
+                answers: {
+                    a: 'București <br>',
+                    b: 'Cluj-Napoca <br>',
+                    c: 'Timișoara <br>'
+                },
+                correctAnswer: 'b'
+            },
+            {
+                question: "3. Care dintre cele 3 companii este considerată <b> cea mai bună companie </b> de design interior, în urma analizei comparative:",
+                answers: {
+                    a: 'Alto Design <br>',
+                    b: 'Bright Interior Design <br>',
+                    c: 'The 6th sense interiors <br>'
+                },
+                correctAnswer: 'c'
+            },
+            {
+                question: "4. Prin care dintre caracteristicile de mai jos este susținut impactul pozitiv al tehnologiei asupra dezvoltării serviciilor de design interior:",
+                answers: {
+                    a: 'Utilizarea unor programe de inteligență artificială <br>',
+                    b: 'Locuințele cu un aspect estetic <br>',
+                    c: 'Niciuna dintre variantele de mai sus <br>'
+                },
+                correctAnswer: 'a'
+            }
+        ];
+
+
+        var quizContainer = document.getElementById('quiz');
+        var resultsContainer = document.getElementById('results');
+        var submitButton = document.getElementById('submit');
+
+        generateQuiz(myQuestions, quizContainer, resultsContainer, submitButton);
+
+        function generateQuiz(questions, quizContainer, resultsContainer, submitButton){
+
+            function showQuestions(questions, quizContainer){
+                            // we'll need a place to store the output and the answer choices
+                var output = [];
+                var answers;
+
+                // for each question...
+                for(var i=0; i<questions.length; i++){
+                    
+                    // first reset the list of answers
+                    answers = [];
+
+                    // for each available answer to this question...
+                    for(letter in questions[i].answers){
+
+                        // ...add an html radio button
+                        answers.push(
+                            '<label>'
+                                + '<input type="radio" name="question'+i+'" value="'+letter+'">'
+                                + letter + ': '
+                                + questions[i].answers[letter]
+                            + '</label>'
+                        );
+                    }
+
+                    // add this question and its answers to the output
+                    output.push(
+                        '<div class="question">' + questions[i].question + '</div>'
+                        + '<div class="answers">' + answers.join('') + '</div>'
+                    );
+                }
+
+                // finally combine our output list into one string of html and put it on the page
+                quizContainer.innerHTML = output.join('');
+            }
+
+            function showResults(questions, quizContainer, resultsContainer){
+                // gather answer containers from our quiz
+                var answerContainers = quizContainer.querySelectorAll('.answers');
+                
+                // keep track of user's answers
+                var userAnswer = '';
+                var numCorrect = 0;
+                
+                // for each question...
+                for(var i=0; i<questions.length; i++){
+
+                    // find selected answer
+                    userAnswer = (answerContainers[i].querySelector('input[name=question'+i+']:checked')||{}).value;
+                    
+                    // if answer is correct
+                    if(userAnswer===questions[i].correctAnswer){
+                        // add to the number of correct answers
+                        numCorrect++;
+                        
+                        // color the answers green
+                        answerContainers[i].style.color = 'green';
+                    }
+                    // if answer is wrong or blank
+                    else{
+                        // color the answers red
+                        answerContainers[i].style.color = 'red';
+                    }
+                }
+
+                // show number of correct answers out of total
+                resultsContainer.innerHTML = "Rezultatul este: " + numCorrect * 2.5 + ' din ' + questions.length * 2.5;
+            }
+
+            // show the questions
+            showQuestions(questions, quizContainer);
+
+            // when user clicks submit, show results
+            submitButton.onclick = function(){
+                showResults(questions, quizContainer, resultsContainer);
+            }
+        }
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
